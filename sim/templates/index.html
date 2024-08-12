@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eminou</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Josefin Sans', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .add-item, .search-bar {
+            display: inline-block;
+            background-color: #008498;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-right: 10px;
+        }
+
+        .add-item:hover, .search-bar:hover {
+            background-color: #006978;
+            transform: scale(1.02);
+        }
+
+        .search-bar input {
+            width: 300px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3fb7bd;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn {
+            background-color: #3fb7bd;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #3fb7bd;
+            transform: scale(1.05);
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The Main List</h1>
+        <form method="get" class="search-bar">
+            <input type="text" name="q" value="{{ query }}" placeholder="Search...">
+            <button type="submit">Search</button>
+        </form>
+        <a class="add-item" href="{% url 'add_entry' %}">Add an Item</a>
+        <table>
+            <thead>
+                <tr>
+                    {% for header in data.0.0.keys %}
+                    <th>{{ header }}</th>
+                    {% endfor %}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row, row_number in data %}
+                <tr>
+                    {% for cell in row.values %}
+                    <td>{{ cell }}</td>
+                    {% endfor %}
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn" href="{% url 'edit_entry' row_number %}">Edit</a>
+                            <a class="btn btn-delete" href="{% url 'delete_entry' row_number %}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
